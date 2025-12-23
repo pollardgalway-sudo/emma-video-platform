@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EMMA美容课程</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 50px;
+        }
+
+        .header h1 {
+            font-size: 3em;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.95;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+        }
+
+
+
+        .videos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .video-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .video-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+        }
+
+        .video-wrapper {
+            position: relative;
+            padding-top: 56.25%;
+            background: #000;
+        }
+
+        .video-wrapper video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .video-info {
+            padding: 25px;
+        }
+
+        .video-title {
+            font-size: 1.3em;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .video-meta {
+            color: #666;
+            font-size: 0.95em;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .video-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .loading {
+            text-align: center;
+            color: white;
+            font-size: 1.8em;
+            padding: 100px 0;
+        }
+
+        .spinner {
+            border: 5px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top: 5px solid white;
+            width: 60px;
+            height: 60px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .no-videos {
+            text-align: center;
+            padding: 80px 20px;
+            background: white;
+            border-radius: 15px;
+            color: #666;
+        }
+
+        .no-videos h3 {
+            font-size: 1.8em;
+            margin-bottom: 10px;
+        }
+
+        .video-count {
+            text-align: center;
+            color: white;
+            font-size: 1.1em;
+            margin-bottom: 30px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 10px;
+            display: inline-block;
+            margin-left: 50%;
+            transform: translateX(-50%);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="header">
+            <h1>EMMA美容课程</h1>
+            <p>专业美容知识 · 系统化学习 · 执照考试辅导</p>
+        </div>
+
+        <div id="loadingContainer" class="loading">
+            <div class="spinner"></div>
+            <p>加载课程中...</p>
+        </div>
+
+        <div id="videoCount" class="video-count" style="display: none;"></div>
+
+        <div id="videosContainer"></div>
+    </div>
+
+    <script>
+        const API_BASE = window.location.origin;
+
+        async function loadVideos() {
+            const loadingEl = document.getElementById('loadingContainer');
+            const countEl = document.getElementById('videoCount');
+            const container = document.getElementById('videosContainer');
+
+            try {
+                const response = await fetch(`${API_BASE}/api/videos`);
+                const data = await response.json();
+
+                loadingEl.style.display = 'none';
+
+                if (!data.success || !data.videos || data.videos.length === 0) {
+                    container.innerHTML = '<div class="no-videos"><h3>暂无课程视频</h3><p>课程内容即将上线，敬请期待</p></div>';
+                    return;
+                }
+
+                const videos = data.videos;
+
+                countEl.textContent = `共 ${videos.length} 个课程视频`;
+                countEl.style.display = 'block';
+
+                const videosHTML = videos.map((video, index) => `
+                    <div class="video-card" data-id="${video.id}">
+                        <div class="video-wrapper">
+                            <video controls preload="metadata" controlsList="nodownload">
+                                <source src="${API_BASE}${video.filepath}" type="video/mp4">
+                                您的浏览器不支持视频播放
+                            </video>
+                        </div>
+                        <div class="video-info">
+                            <div class="video-title">${video.title}</div>
+                            <div class="video-meta">
+                                <div class="video-meta-item">
+                                    📅 ${formatDate(video.uploadDate)}
+                                </div>
+                                <div class="video-meta-item">
+                                    📊 ${formatFileSize(video.size)}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+
+                container.innerHTML = `<div class="videos-grid">${videosHTML}</div>`;
+            } catch (error) {
+                console.error('加载视频失败:', error);
+                loadingEl.style.display = 'none';
+                container.innerHTML = '<div class="no-videos"><h3>加载失败</h3><p>请稍后重试或联系管理员</p></div>';
+            }
+        }
+
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return Math.round(bytes / Math.pow(k, i) * 100) / 100 + ' ' + sizes[i];
+        }
+
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        }
+
+        document.addEventListener('DOMContentLoaded', loadVideos);
+    </script>
+</body>
+</html>

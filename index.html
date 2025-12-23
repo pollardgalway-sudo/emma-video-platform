@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EMMA美容课程视频</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .videos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .video-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .video-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+        }
+
+        .video-wrapper {
+            position: relative;
+            padding-top: 56.25%; /* 16:9 Aspect Ratio */
+            background: #000;
+        }
+
+        .video-wrapper video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .video-info {
+            padding: 20px;
+        }
+
+        .video-title {
+            font-size: 1.2em;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .video-meta {
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .error-message {
+            background: #ff4444;
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 10px;
+            font-size: 0.85em;
+        }
+
+        .no-video {
+            background: #f0f0f0;
+            padding: 40px;
+            text-align: center;
+            color: #666;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>EMMA美容课程视频</h1>
+        
+        <div id="videosContainer" class="videos-grid"></div>
+    </div>
+
+    <script>
+        // 硬编码的视频列表
+        const videos = [
+            {
+                id: 1,
+                title: 'EMMA美容大牌全科讲解(1)',
+                filename: 'dapai1.mp4',
+                filepath: 'https://your-video-hosting-url.com/videos/dapai1.mp4',
+                duration: 3600
+            },
+            {
+                id: 2,
+                title: 'EMMA美容大牌全科讲解(2)',
+                filename: 'dapai2.mp4',
+                filepath: 'https://your-video-hosting-url.com/videos/dapai2.mp4',
+                duration: 3600
+            },
+            {
+                id: 3,
+                title: 'EMMA美容大牌全科讲解(3)',
+                filename: 'dapai3.mp4',
+                filepath: 'https://your-video-hosting-url.com/videos/dapai3.mp4',
+                duration: 3600
+            },
+            {
+                id: 4,
+                title: 'EMMA美容大牌执照讲解（二）第一节',
+                filename: 'dapai2-1.mp4',
+                filepath: 'https://your-video-hosting-url.com/videos/dapai2-1.mp4',
+                duration: 3600
+            },
+            {
+                id: 5,
+                title: 'EMMA美容大牌执照讲解（二）第二节',
+                filename: 'dapai2-2.mp4',
+                filepath: 'https://your-video-hosting-url.com/videos/dapai2-2.mp4',
+                duration: 3600
+            },
+            {
+                id: 6,
+                title: 'EMMA美容大牌执照讲解（二）第三节',
+                filename: 'dapai2-3.mp4',
+                filepath: 'https://your-video-hosting-url.com/videos/dapai2-3.mp4',
+                duration: 3600
+            }
+        ];
+        
+        function formatDuration(seconds) {
+            const hours = Math.floor(seconds / 3600);
+            const minutes = Math.floor((seconds % 3600) / 60);
+            const secs = seconds % 60;
+            
+            if (hours > 0) {
+                return `${hours}小时${minutes}分钟`;
+            }
+            return `${minutes}分钟`;
+        }
+        
+        function displayVideos() {
+            const container = document.getElementById('videosContainer');
+            
+            if (videos.length === 0) {
+                container.innerHTML = '<div class="no-video">暂无视频</div>';
+                return;
+            }
+            
+            container.innerHTML = videos.map(video => `
+                <div class="video-card">
+                    <div class="video-wrapper">
+                        <video controls preload="metadata" onerror="handleVideoError(this)">
+                            <source src="${video.filepath}" type="video/mp4">
+                            您的浏览器不支持视频播放
+                        </video>
+                    </div>
+                    <div class="video-info">
+                        <div class="video-title">${video.title}</div>
+                        <div class="video-meta">
+                            时长: ${formatDuration(video.duration)}
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        function handleVideoError(videoElement) {
+            const card = videoElement.closest('.video-card');
+            const info = card.querySelector('.video-info');
+            if (info) {
+                info.innerHTML += '<div class="error-message">⚠️ 视频文件加载失败。请检查视频URL是否正确。</div>';
+            }
+        }
+        
+        // 页面加载完成后显示视频
+        document.addEventListener('DOMContentLoaded', displayVideos);
+    </script>
+</body>
+</html>
