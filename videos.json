@@ -1,29 +1,47 @@
 [
   {
-    "id": 1766458091887,
-    "title": "大牌第一节课",
-    "filename": "1766458039026-510742548.mp4",
+    "id": 1,
+    "title": "EMMA美容大牌全科讲解(2)",
+    "filename": "dapai2.mp4",
     "originalname": "dapai2.mp4",
-    "filepath": "/uploads/1766458039026-510742548.mp4",
+    "filepath": "https://emma-videos-1314142650.cos.ap-guangzhou.myqcloud.com/dapai2.mp4",
     "size": 2141244182,
-    "uploadDate": "2025-12-23T02:48:11.887Z"
+    "uploadDate": "2025-12-23T08:00:00.000Z"
   },
   {
-    "id": 1766458409554,
-    "title": "大牌第一节课（2）",
-    "filename": "1766458368403-614044264.mp4",
+    "id": 2,
+    "title": "EMMA美容大牌全科讲解(3)",
+    "filename": "dapai3.mp4",
     "originalname": "dapai3.mp4",
-    "filepath": "/uploads/1766458368403-614044264.mp4",
-    "size": 2000974575,
-    "uploadDate": "2025-12-23T02:53:29.554Z"
+    "filepath": "https://emma-videos-1314142650.cos.ap-guangzhou.myqcloud.com/dapai3.mp4",
+    "size": 2000000000,
+    "uploadDate": "2025-12-23T08:00:00.000Z"
   },
   {
-    "id": 1766458602944,
-    "title": "大牌第一节课（1）",
-    "filename": "1766458475121-803723076.mp4",
-    "originalname": "dapai1.mp4",
-    "filepath": "/uploads/1766458475121-803723076.mp4",
-    "size": 1678168064,
-    "uploadDate": "2025-12-23T02:56:42.944Z"
+    "id": 3,
+    "title": "EMMA美容大牌执照讲解(1)",
+    "filename": "大牌1.mp4",
+    "originalname": "大牌1.mp4",
+    "filepath": "https://emma-videos-1314142650.cos.ap-guangzhou.myqcloud.com/%E5%A4%A7%E7%89%8C1.mp4",
+    "size": 1700000000,
+    "uploadDate": "2025-12-23T08:00:00.000Z"
+  },
+  {
+    "id": 4,
+    "title": "EMMA美容大牌执照讲解(二)第一节",
+    "filename": "dapai2-1.mp4",
+    "originalname": "dapai2-1.mp4",
+    "filepath": "https://emma-videos-1314142650.cos.ap-guangzhou.myqcloud.com/dapai2-1.mp4",
+    "size": 1800000000,
+    "uploadDate": "2025-12-23T08:00:00.000Z"
+  },
+  {
+    "id": 5,
+    "title": "EMMA美容大牌执照讲解(二)第二节",
+    "filename": "dapai2-2.mp4",
+    "originalname": "dapai2-2.mp4",
+    "filepath": "https://emma-videos-1314142650.cos.ap-guangzhou.myqcloud.com/dapai2-2.mp4",
+    "size": 1900000000,
+    "uploadDate": "2025-12-23T08:00:00.000Z"
   }
 ]
